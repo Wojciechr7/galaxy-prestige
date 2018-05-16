@@ -57,7 +57,8 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from: './index.html' }
+            { from: './index.html' },
+            { from: './favicon.ico' }
         ]),
         new LiveReloadPlugin()
     ]
