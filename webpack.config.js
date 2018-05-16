@@ -1,6 +1,7 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
@@ -44,6 +45,20 @@ module.exports = {
                         loader: 'import-glob-loader'
                     }
                 ]
+            },
+            {
+                test: /\.html$/,
+                use: ['html-loader']
+            },
+            {
+                test: /\.(jpg|png)$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'img/'
+                    }
+                }]
             }
 
         ]
@@ -57,10 +72,13 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            { from: './index.html' },
+            /*{ from: './index.html' },*/
             { from: './favicon.ico' }
         ]),
-        new LiveReloadPlugin()
+        new LiveReloadPlugin(),
+        new HtmlWebpackPlugin({
+            template: 'src/index.html'
+        })
     ]
 
 
