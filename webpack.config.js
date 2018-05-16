@@ -2,6 +2,7 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
@@ -72,13 +73,13 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([
-            /*{ from: './index.html' },*/
             { from: './favicon.ico' }
         ]),
         new LiveReloadPlugin(),
         new HtmlWebpackPlugin({
             template: 'src/index.html'
-        })
+        }),
+        new CleanWebpackPlugin(['dist'])
     ]
 
 
