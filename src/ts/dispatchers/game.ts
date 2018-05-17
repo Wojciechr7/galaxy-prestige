@@ -26,29 +26,37 @@ export class Game {
     public listen(identifier: Identifier): void {
         this.socket.on('players', (data: any) => {
 
-            this.players = data.players;
+
+
+            for (let i in data.players) {
+                this.players[i] = data.players[i];
+            }
+
             //console.log('get players: ', this.players);
 
-            if (!this.MP.myPlayerSet) {
-                for (const p of data.players) {
-                    if (p[0] === identifier.MyId) {
-                        this.MP.myPlayer = p;
-                        this.MP.myPlayerSet = true;
+            this.setupMyPlayer(data.players, identifier);
 
-                        console.log('player 1 has been set', p);
-                        this.canvas.drawPlayers(this.players, this.emitMyPlayer);
-                    }
-                }
-            }
         });
     }
+
+    private setupMyPlayer(players: any, identifier: Identifier) {
+        if (!this.MP.myPlayerSet) {
+            for (const p of players) {
+                if (p[0] === identifier.MyId) {
+                    this.MP.myPlayer = p;
+                    this.MP.myPlayerSet = true;
+                    this.canvas.drawPlayers(this.players, this.emitMyPlayer);
+                }
+            }
+        }
+    }
+
 
     private emitMyPlayer = () => {
         if (this.MP.myPlayerSet) {
             //console.log('emiting my player', this.MP.myPlayer);
             // TODO 2 methods
             this.MP.setMyPosition();
-            //this.myPlayer[3] = this.setAngle();
             this.socket
                 .emit('player', this.MP.myPlayer);
         }

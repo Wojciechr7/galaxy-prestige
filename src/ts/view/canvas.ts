@@ -17,6 +17,7 @@ export class Canvas {
         spaceShip.src = 'img/ship.png';
 
         const paintLoop = () => {
+            //console.log(players);
             this.ctx.clearRect(0, 0, 700, 700);
             for (const item of players) {
 
@@ -29,7 +30,6 @@ export class Canvas {
 
             }
             emit();
-            //console.log('siema');
 
 
             //console.log(this.players);

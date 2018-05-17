@@ -1,8 +1,8 @@
 import Socket = SocketIOClient.Socket;
-import {Game} from "./receivers/game";
+import {Game} from "./dispatchers/game";
 import {Canvas} from "./view/canvas";
-import {Identifier} from "./receivers/identifier";
-import {Online} from "./receivers/online";
+import {Identifier} from "./dispatchers/identifier";
+import {Online} from "./dispatchers/online";
 import {MyPlayer} from "./myPlayer";
 
 
@@ -17,7 +17,7 @@ export class Main {
 
 
     constructor() {
-        this.mousePosition = [0, 0];
+        this.mousePosition = [200, 200];
         this.socket = io('http://localhost:3000/');
         this.canvas = new Canvas();
 
@@ -37,11 +37,28 @@ export class Main {
         new Online(this.socket).listen();
 
 
+        this.handleEvents();
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private handleEvents() {
+
         $('#canvas-board').mousemove(e => {
             this.mousePosition[0] = e.offsetX;
             this.mousePosition[1] = e.offsetY;
         });
+
     }
+
 
 
 }

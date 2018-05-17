@@ -1,5 +1,3 @@
-
-
 export class MyPlayer {
 
     public myPlayerSet: boolean;
@@ -14,10 +12,8 @@ export class MyPlayer {
     }
 
 
-
     public setMyPosition() {
         const acc = this.countAcceleration();
-        //console.log(this.mouse);
 
         if (this.myPlayer[1] + acc[0] < 700 && this.myPlayer[1] + acc[0] > 0) {
             if (Math.abs(this.mouse[0] - this.myPlayer[1]) > 15) {
@@ -30,6 +26,7 @@ export class MyPlayer {
                 }
             }
         }
+        this.myPlayer[3] = this.setAngle();
     }
 
     private countAcceleration() {
@@ -40,5 +37,13 @@ export class MyPlayer {
             (this.mouse[1] - this.myPlayer[2]) / total * this.acceleration
         ];
 
+    }
+
+    private setAngle() {
+        let sight = -1;
+        if (this.mouse[0] > this.myPlayer[1]) {
+            sight = 1;
+        }
+        return Math.atan((this.myPlayer[2] - this.mouse[1]) / (this.myPlayer[1] - this.mouse[0])) * 180 / Math.PI + 90 * sight;
     }
 }
