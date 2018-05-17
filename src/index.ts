@@ -5,31 +5,10 @@ import 'socket.io-client';
 // SCSS LOADER
 import './style.scss';
 
-// TYPESCRIPT LOADER
-import './ts/canvas';
-
 // MODULES
-import {Receiver} from "./ts/receiver";
+import {Main} from "./ts/main";
 
 
-class Main {
-    static initialize() {
-
-        new Receiver(io('http://localhost:3000/')).listen();
-
-
-
-
-
-
-
-
-
-
-    }
-} Main.initialize();
-
-
-
+new Main();
 
 
