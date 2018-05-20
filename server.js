@@ -1,7 +1,9 @@
 var http = require('http');
 var path = require('path');
 var express = require('express');
+var port = 3000;
 var app = express();
+
 
 
 app.use(express.static(path.join(__dirname, "/dist")));
@@ -10,7 +12,8 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname+"/dist/index.html");
 });
 
-console.log('server is running');
+console.log('server is running on port:', port);
+
 
 var allClients = [];
 var players = [];
@@ -45,6 +48,7 @@ io.on('connection', function(socket){
     });
 
     socket.on('player', function(player){
+        //console.log(players[0][4]);
         player.push(socket.id);
         playerFound = false;
         if (!players[0]) {
@@ -63,10 +67,13 @@ io.on('connection', function(socket){
         io.emit('players', {players : players});
     });
     socket.on('shoot from', function(shoot) {
-        //console.log(shoot);
+       // console.log(shoot);
+        // id, start[x,y], accel[x,y]
+
         io.emit('shoot', {shoot : shoot});
 
     });
 });
 
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || port);
+

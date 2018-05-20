@@ -1,4 +1,5 @@
 import Socket = SocketIOClient.Socket;
+import {Canvas} from "../view/canvas";
 
 
 export class Shot {
@@ -9,9 +10,14 @@ export class Shot {
         this.socket = socket;
     }
 
-    public listen(): any {
+    public listen(canvas: Canvas): any {
         this.socket.on('shoot', (data: any) => {
-            console.log(data.shoot);
+            canvas.drawBullet(data.shoot);
         });
     }
+
+
+
+
+
 }

@@ -1,14 +1,31 @@
-export class MyPlayer {
+import Socket = SocketIOClient.Socket;
+import {Identifier} from "./dispatchers/identifier";
+
+
+export class MySpacecraft {
 
     public myPlayerSet: boolean;
     public myPlayer: any;
     public mouse: Array<number>;
-    public acceleration: number;
+    private acceleration: number;
+    private socket: Socket;
 
 
-    constructor(m: Array<number>) {
+
+    constructor(m: Array<number>, socket: Socket) {
         this.mouse = m;
         this.acceleration = 4;
+        this.socket = socket;
+
+    }
+
+
+    set Accelerate(val: number) {
+        this.acceleration = val;
+    }
+
+    set StopAccelerate(val: number) {
+        this.acceleration = val;
     }
 
 
@@ -46,4 +63,19 @@ export class MyPlayer {
         }
         return Math.atan((this.myPlayer[2] - this.mouse[1]) / (this.myPlayer[1] - this.mouse[0])) * 180 / Math.PI + 90 * sight;
     }
+
+
+    public shoot(identifier: Identifier) {
+            const start = [this.myPlayer[1], this.myPlayer[2]];
+
+            const total = Math.abs(this.mouse[0] - start[0]) + Math.abs(this.mouse[1] - start[1]);
+
+            const acceleration = [(this.mouse[0] - start[0]) / total * 25, (this.mouse[1] - start[1]) / total * 25];
+
+            this.socket
+                .emit('shoot from', [identifier.MyId, start, acceleration]);
+    }
+
+
+
 }

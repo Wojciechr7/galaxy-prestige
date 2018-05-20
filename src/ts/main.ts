@@ -1,19 +1,22 @@
 import Socket = SocketIOClient.Socket;
-import {Game} from "./dispatchers/game";
+import {Fleet} from "./dispatchers/fleet";
 import {Canvas} from "./view/canvas";
 import {Identifier} from "./dispatchers/identifier";
 import {Online} from "./dispatchers/online";
-import {MyPlayer} from "./myPlayer";
+import {MySpacecraft} from "./mySpacecraft";
+import {Control} from "./control";
+import {Shot} from "./dispatchers/shot";
 
 
 export class Main {
 
     private socket: Socket;
     private identifier: Identifier;
-    private game: Game;
+    private fleet: Fleet;
     private canvas: Canvas;
-    private MP: MyPlayer;
+    private MP: MySpacecraft;
     private mousePosition: Array<number>;
+    private shot: Shot;
 
 
     constructor() {
@@ -25,11 +28,14 @@ export class Main {
 
         this.identifier.listen();
 
-        this.MP = new MyPlayer(this.mousePosition);
+        this.MP = new MySpacecraft(this.mousePosition, this.socket);
 
-        this.game = new Game(this.socket, this.canvas, this.MP);
+        this.fleet = new Fleet(this.socket, this.canvas, this.MP);
 
-        this.game.listen(this.identifier);
+        this.fleet.listen(this.identifier);
+
+        this.shot = new Shot(this.socket);
+        this.shot.listen(this.canvas);
 
 
 
@@ -37,7 +43,7 @@ export class Main {
         new Online(this.socket).listen();
 
 
-        this.handleEvents();
+        new Control().handleEvents(this.mousePosition, this.MP, this.identifier);
     }
 
 
@@ -50,14 +56,7 @@ export class Main {
 
 
 
-    private handleEvents() {
 
-        $('#canvas-board').mousemove(e => {
-            this.mousePosition[0] = e.offsetX;
-            this.mousePosition[1] = e.offsetY;
-        });
-
-    }
 
 
 

@@ -76,7 +76,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
-            io: 'socket.io-client'
+            io: 'socket.io-client',
+            SAT: 'sat'
         }),
         new CopyWebpackPlugin([
             { from: './favicon.ico' }
